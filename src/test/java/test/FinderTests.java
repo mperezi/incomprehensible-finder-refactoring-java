@@ -1,9 +1,8 @@
 package test;
-import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,98 +12,90 @@ import algorithm.SearchCriteria;
 import algorithm.Finder;
 import algorithm.Person;
 
+import static org.junit.Assert.*;
+
 public class FinderTests {
 	Person sue;
 	Person greg;
 	Person sarah;
 	Person mike;
 
-
 	@Before
 	public void setup() {
-		sue = new Person("Sue", new Date(50, 0, 1));
-		greg = new Person("Greg", new Date(52, 5, 1));
-		sarah = new Person("Sarah", new Date(82, 0, 1));
-		mike = new Person("Mike", new Date(79, 0, 1));
+		sue = new Person("Sue", LocalDate.of(1950, Month.JANUARY, 1));
+		greg = new Person("Greg", LocalDate.of(1952, Month.JUNE, 1));
+		sarah = new Person("Sarah", LocalDate.of(1982, Month.JANUARY, 1));
+		mike = new Person("Mike", LocalDate.of(1979, Month.JANUARY, 1));
 	}
 
 	@Test
 	public void Returns_Empty_Results_When_Given_Empty_List() {
-		List<Person> list = new ArrayList<Person>();
+		List<Person> list = Collections.emptyList();
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.ClosestTwoPeople);
-		assertEquals(AgeDifference.EMPTY_RESULT, result);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.ClosestTwoPeople);
+		assertFalse(result.isPresent());
 	}
 
 	@Test
 	public void Returns_Empty_Results_When_Given_One_Person() {
-		List<Person> list = new ArrayList<Person>();
-		list.add(sue);
+		List<Person> list = Collections.singletonList(sue);
 
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.ClosestTwoPeople);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.ClosestTwoPeople);
 
-		assertEquals(AgeDifference.EMPTY_RESULT, result);
+		assertFalse(result.isPresent());
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Two_People() {
-		List<Person> list = new ArrayList<Person>();
-		list.add(sue);
-		list.add(greg);
+		List<Person> list = Arrays.asList(sue, greg);
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.ClosestTwoPeople);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.getOldestPerson());
-		assertEquals(greg, result.getYoungestPerson());
+		assertTrue(result.isPresent());
+		assertEquals(sue, result.get().getOldestPerson());
+		assertEquals(greg, result.get().getYoungestPerson());
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Two_People() {
-		List<Person> list = new ArrayList<Person>();
-		list.add(mike);
-		list.add(greg);
+		List<Person> list = Arrays.asList(mike, greg);
 
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.FurthestTwoPeople);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.FurthestTwoPeople);
 
-		assertEquals(greg, result.getOldestPerson());
-		assertEquals(mike, result.getYoungestPerson());
+		assertTrue(result.isPresent());
+		assertEquals(greg, result.get().getOldestPerson());
+		assertEquals(mike, result.get().getYoungestPerson());
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Four_People() {
-		List<Person> list = new ArrayList<Person>();
-		list.add(sue);
-		list.add(sarah);
-		list.add(mike);
-		list.add(greg);
+		List<Person> list = Arrays.asList(sue, sarah, mike, greg);
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.FurthestTwoPeople);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.FurthestTwoPeople);
 
-		assertEquals(sue, result.getOldestPerson());
-		assertEquals(sarah, result.getYoungestPerson());
+		assertTrue(result.isPresent());
+		assertEquals(sue, result.get().getOldestPerson());
+		assertEquals(sarah, result.get().getYoungestPerson());
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Four_People() {
-		List<Person> list = new ArrayList<Person>();
-		list.add(sue);
-		list.add(sarah);
-		list.add(mike);
-		list.add(greg);
+		List<Person> list = Arrays.asList(sue, sarah, mike, greg);
 
 		Finder finder = new Finder(list);
 
-		AgeDifference result = finder.find(SearchCriteria.ClosestTwoPeople);
+		Optional<AgeDifference> result = finder.find(SearchCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.getOldestPerson());
-		assertEquals(greg, result.getYoungestPerson());
+		assertTrue(result.isPresent());
+		assertEquals(sue, result.get().getOldestPerson());
+		assertEquals(greg, result.get().getYoungestPerson());
 	}
 
 }

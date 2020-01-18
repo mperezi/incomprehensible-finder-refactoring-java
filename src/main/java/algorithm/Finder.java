@@ -10,9 +10,9 @@ public class Finder {
 		this.people = people;
 	}
 
-	public AgeDifference find(SearchCriteria searchCriteria) {
+	public Optional<AgeDifference> find(SearchCriteria searchCriteria) {
 		if (people.size() < 2) {
-			return AgeDifference.EMPTY_RESULT;
+			return Optional.empty();
 		}
 
 		calculateAgeDifferences();
@@ -44,14 +44,14 @@ public class Finder {
 		return firstPerson.isOlderThan(secondPerson) ? secondPerson : firstPerson;
 	}
 
-	private AgeDifference findByCriteria(SearchCriteria searchCriteria) {
+	private Optional<AgeDifference> findByCriteria(SearchCriteria searchCriteria) {
 		Collections.sort(ageDifferences);
 		switch (searchCriteria) {
 			case ClosestTwoPeople:
-				return ageDifferences.get(0);
+				return Optional.of(ageDifferences.get(0));
 			case FurthestTwoPeople:
-				return ageDifferences.get(ageDifferences.size() - 1);
+				return Optional.of(ageDifferences.get(ageDifferences.size() - 1));
 		}
-		return AgeDifference.EMPTY_RESULT;
+		return Optional.empty();
 	}
 }
