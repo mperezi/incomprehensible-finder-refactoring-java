@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Finder {
 	private final List<Person> people;
-	private List<AgeDifference> ageDifferences = new ArrayList<AgeDifference>();
+	private List<AgeDifference> ageDifferences;
 
 	public Finder(List<Person> people) {
 		this.people = people;
@@ -20,6 +20,7 @@ public class Finder {
 	}
 
 	private void calculateAgeDifferences() {
+		ageDifferences = new ArrayList<>();
 		int numberOfPeople = people.size();
 
 		for (int i = 0; i < numberOfPeople - 1; i++) {
