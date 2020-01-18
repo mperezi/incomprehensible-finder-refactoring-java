@@ -34,9 +34,7 @@ public class FinderTests {
 		Finder finder = new Finder(list);
 
 		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
-		assertEquals(null, result.oldestPerson);
-
-		assertEquals(null, result.youngestPerson);
+		assertEquals(AgeDifference.EMPTY_RESULT, result);
 	}
 
 	@Test
@@ -48,8 +46,7 @@ public class FinderTests {
 
 		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(null, result.oldestPerson);
-		assertEquals(null, result.youngestPerson);
+		assertEquals(AgeDifference.EMPTY_RESULT, result);
 	}
 
 	@Test
@@ -61,8 +58,8 @@ public class FinderTests {
 
 		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.oldestPerson);
-		assertEquals(greg, result.youngestPerson);
+		assertEquals(sue, result.getOldestPerson());
+		assertEquals(greg, result.getYoungestPerson());
 	}
 
 	@Test
@@ -75,8 +72,8 @@ public class FinderTests {
 
 		AgeDifference result = finder.find(FindCriteria.FurthestTwoPeople);
 
-		assertEquals(greg, result.oldestPerson);
-		assertEquals(mike, result.youngestPerson);
+		assertEquals(greg, result.getOldestPerson());
+		assertEquals(mike, result.getYoungestPerson());
 	}
 
 	@Test
@@ -90,8 +87,8 @@ public class FinderTests {
 
 		AgeDifference result = finder.find(FindCriteria.FurthestTwoPeople);
 
-		assertEquals(sue, result.oldestPerson);
-		assertEquals(sarah, result.youngestPerson);
+		assertEquals(sue, result.getOldestPerson());
+		assertEquals(sarah, result.getYoungestPerson());
 	}
 
 	@Test
@@ -106,8 +103,8 @@ public class FinderTests {
 
 		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.oldestPerson);
-		assertEquals(greg, result.youngestPerson);
+		assertEquals(sue, result.getOldestPerson());
+		assertEquals(greg, result.getYoungestPerson());
 	}
 
 }

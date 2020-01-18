@@ -12,7 +12,7 @@ public class Finder {
 
 	public AgeDifference find(FindCriteria findCriteria) {
 		if (people.size() < 2) {
-			return new AgeDifference();
+			return AgeDifference.EMPTY_RESULT;
 		}
 
 		List<AgeDifference> ageDifferences = calculateAgeDifferences();
@@ -21,9 +21,10 @@ public class Finder {
 
 	private List<AgeDifference> calculateAgeDifferences() {
 		List<AgeDifference> differences = new ArrayList<AgeDifference>();
+		int numberOfPeople = people.size();
 
-		for (int i = 0; i < people.size() - 1; i++) {
-			for (int j = i + 1; j < people.size(); j++) {
+		for (int i = 0; i < numberOfPeople - 1; i++) {
+			for (int j = i + 1; j < numberOfPeople; j++) {
 				AgeDifference ageDifference = calculateAgeDifference(people.get(i), people.get(j));
 				differences.add(ageDifference);
 			}
@@ -33,16 +34,17 @@ public class Finder {
 	}
 
 	private AgeDifference calculateAgeDifference(Person firstPerson, Person secondPerson) {
-		AgeDifference ageDiff = new AgeDifference();
-		if (firstPerson.isOlderThan(secondPerson)) {
-			ageDiff.oldestPerson = firstPerson;
-			ageDiff.youngestPerson = secondPerson;
-		} else {
-			ageDiff.oldestPerson = secondPerson;
-			ageDiff.youngestPerson = firstPerson;
-		}
-		ageDiff.timeDiffInMillis = firstPerson.ageDiffInMillis(secondPerson);
-		return ageDiff;
+		return new AgeDifference(oldestPerson(firstPerson, secondPerson),
+		                         youngestPerson(firstPerson, secondPerson),
+		                         firstPerson.ageDiffInMillis(secondPerson));
+	}
+
+	private Person oldestPerson(Person firstPerson, Person secondPerson) {
+		return firstPerson.isOlderThan(secondPerson) ? firstPerson : secondPerson;
+	}
+
+	private Person youngestPerson(Person firstPerson, Person secondPerson) {
+		return firstPerson.isOlderThan(secondPerson) ? secondPerson : firstPerson;
 	}
 
 	private AgeDifference findByCriteria(FindCriteria findCriteria, List<AgeDifference> differences) {
@@ -50,13 +52,13 @@ public class Finder {
 		for (AgeDifference result : differences) {
 			switch (findCriteria) {
 				case ClosestTwoPeople:
-					if (result.timeDiffInMillis < answer.timeDiffInMillis) {
+					if (result.getTimeDiffInMillis() < answer.getTimeDiffInMillis()) {
 						answer = result;
 					}
 					break;
 
 				case FurthestTwoPeople:
-					if (result.timeDiffInMillis > answer.timeDiffInMillis) {
+					if (result.getTimeDiffInMillis() > answer.getTimeDiffInMillis()) {
 						answer = result;
 					}
 					break;
