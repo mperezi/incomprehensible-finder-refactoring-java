@@ -3,45 +3,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Finder {
-	private final List<Thing> _p;
+	private final List<Person> people;
 
-	public Finder(List<Thing> p) {
-		_p = p;
+	public Finder(List<Person> people) {
+		this.people = people;
 	}
 
-	public F Find(FT ft) {
-		List<F> tr = new ArrayList<F>();
+	public AgeDifference find(FindCriteria findCriteria) {
+		List<AgeDifference> differences = new ArrayList<AgeDifference>();
 
-		for (int i = 0; i < _p.size() - 1; i++) {
-			for (int j = i + 1; j < _p.size(); j++) {
-				F r = new F();
-				if (_p.get(i).birthDate.getTime() < _p.get(j).birthDate.getTime()) {
-					r.P1 = _p.get(i);
-					r.P2 = _p.get(j);
+		for (int i = 0; i < people.size() - 1; i++) {
+			for (int j = i + 1; j < people.size(); j++) {
+				AgeDifference ageDiff = new AgeDifference();
+				if (people.get(i).birthDate.getTime() < people.get(j).birthDate.getTime()) {
+					ageDiff.oldestPerson = people.get(i);
+					ageDiff.youngestPerson = people.get(j);
 				} else {
-					r.P1 = _p.get(j);
-					r.P2 = _p.get(i);
+					ageDiff.oldestPerson = people.get(j);
+					ageDiff.youngestPerson = people.get(i);
 				}
-				r.D = r.P2.birthDate.getTime() - r.P1.birthDate.getTime();
-				tr.add(r);
+				ageDiff.timeDiffInMillis = ageDiff.youngestPerson.birthDate.getTime() - ageDiff.oldestPerson.birthDate.getTime();
+				differences.add(ageDiff);
 			}
 		}
 
-		if (tr.size() < 1) {
-			return new F();
+		if (differences.size() < 1) {
+			return new AgeDifference();
 		}
 
-		F answer = tr.get(0);
-		for (F result : tr) {
-			switch (ft) {
-				case One :
-					if (result.D < answer.D) {
+		AgeDifference answer = differences.get(0);
+		for (AgeDifference result : differences) {
+			switch (findCriteria) {
+				case ClosestTwoPeople:
+					if (result.timeDiffInMillis < answer.timeDiffInMillis) {
 						answer = result;
 					}
 					break;
 
-				case Two :
-					if (result.D > answer.D) {
+				case FurthestTwoPeople:
+					if (result.timeDiffInMillis > answer.timeDiffInMillis) {
 						answer = result;
 					}
 					break;

@@ -8,17 +8,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import algorithm.F;
-import algorithm.FT;
+import algorithm.AgeDifference;
+import algorithm.FindCriteria;
 import algorithm.Finder;
-import algorithm.Thing;
+import algorithm.Person;
 
 public class FinderTests {
 
-	Thing sue = new Thing();
-	Thing greg = new Thing();
-	Thing sarah = new Thing();
-	Thing mike = new Thing();
+	Person sue = new Person();
+	Person greg = new Person();
+	Person sarah = new Person();
+	Person mike = new Person();
 
 	@Before
 	public void setup() {
@@ -34,73 +34,73 @@ public class FinderTests {
 
 	@Test
 	public void Returns_Empty_Results_When_Given_Empty_List() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.One);
-		assertEquals(null, result.P1);
+		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
+		assertEquals(null, result.oldestPerson);
 
-		assertEquals(null, result.P2);
+		assertEquals(null, result.youngestPerson);
 	}
 
 	@Test
 	public void Returns_Empty_Results_When_Given_One_Person() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		list.add(sue);
 
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.One);
+		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(null, result.P1);
-		assertEquals(null, result.P2);
+		assertEquals(null, result.oldestPerson);
+		assertEquals(null, result.youngestPerson);
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Two_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		list.add(sue);
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.One);
+		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.P1);
-		assertEquals(greg, result.P2);
+		assertEquals(sue, result.oldestPerson);
+		assertEquals(greg, result.youngestPerson);
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Two_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		list.add(mike);
 		list.add(greg);
 
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.Two);
+		AgeDifference result = finder.find(FindCriteria.FurthestTwoPeople);
 
-		assertEquals(greg, result.P1);
-		assertEquals(mike, result.P2);
+		assertEquals(greg, result.oldestPerson);
+		assertEquals(mike, result.youngestPerson);
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Four_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		list.add(sue);
 		list.add(sarah);
 		list.add(mike);
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.Two);
+		AgeDifference result = finder.find(FindCriteria.FurthestTwoPeople);
 
-		assertEquals(sue, result.P1);
-		assertEquals(sarah, result.P2);
+		assertEquals(sue, result.oldestPerson);
+		assertEquals(sarah, result.youngestPerson);
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Four_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<Person> list = new ArrayList<Person>();
 		list.add(sue);
 		list.add(sarah);
 		list.add(mike);
@@ -108,10 +108,10 @@ public class FinderTests {
 
 		Finder finder = new Finder(list);
 
-		F result = finder.Find(FT.One);
+		AgeDifference result = finder.find(FindCriteria.ClosestTwoPeople);
 
-		assertEquals(sue, result.P1);
-		assertEquals(greg, result.P2);
+		assertEquals(sue, result.oldestPerson);
+		assertEquals(greg, result.youngestPerson);
 	}
 
 }
