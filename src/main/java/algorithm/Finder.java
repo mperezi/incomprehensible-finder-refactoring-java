@@ -34,15 +34,14 @@ public class Finder {
 
 	private AgeDifference calculateAgeDifference(Person firstPerson, Person secondPerson) {
 		AgeDifference ageDiff = new AgeDifference();
-		if (firstPerson.birthDate.getTime() < secondPerson.birthDate.getTime()) {
+		if (firstPerson.isOlderThan(secondPerson)) {
 			ageDiff.oldestPerson = firstPerson;
 			ageDiff.youngestPerson = secondPerson;
 		} else {
 			ageDiff.oldestPerson = secondPerson;
 			ageDiff.youngestPerson = firstPerson;
 		}
-		ageDiff.timeDiffInMillis =
-				ageDiff.youngestPerson.birthDate.getTime() - ageDiff.oldestPerson.birthDate.getTime();
+		ageDiff.timeDiffInMillis = firstPerson.ageDiffInMillis(secondPerson);
 		return ageDiff;
 	}
 
