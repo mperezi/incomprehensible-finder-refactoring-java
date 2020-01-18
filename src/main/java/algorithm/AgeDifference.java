@@ -1,16 +1,22 @@
 package algorithm;
 
-public final class AgeDifference {
+public final class AgeDifference implements Comparable<AgeDifference> {
 	private final Person oldestPerson;
 	private final Person youngestPerson;
 	private final long timeDiffInMillis;
 
-	public static final AgeDifference EMPTY_RESULT = new AgeDifference(null, null, 0L);
+	public static final AgeDifference EMPTY_RESULT = new AgeDifference();
 
-	public AgeDifference(Person oldestPerson, Person youngestPerson, long timeDiffInMillis) {
+	private AgeDifference() {
+		oldestPerson = null;
+		youngestPerson = null;
+		timeDiffInMillis = 0L;
+	}
+
+	public AgeDifference(Person oldestPerson, Person youngestPerson) {
 		this.oldestPerson = oldestPerson;
 		this.youngestPerson = youngestPerson;
-		this.timeDiffInMillis = timeDiffInMillis;
+		timeDiffInMillis =  oldestPerson.ageDiffInMillis(youngestPerson);
 	}
 
 	public Person getOldestPerson() {
@@ -21,7 +27,8 @@ public final class AgeDifference {
 		return youngestPerson;
 	}
 
-	public long getTimeDiffInMillis() {
-		return timeDiffInMillis;
+	@Override
+	public int compareTo(AgeDifference other) {
+		return timeDiffInMillis - other.timeDiffInMillis < 0L ? -1 : 1;
 	}
 }

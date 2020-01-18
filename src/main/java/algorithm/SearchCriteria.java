@@ -1,4 +1,5 @@
 package algorithm;
-public enum FindCriteria {
+
+public enum SearchCriteria {
 	ClosestTwoPeople, FurthestTwoPeople
 }

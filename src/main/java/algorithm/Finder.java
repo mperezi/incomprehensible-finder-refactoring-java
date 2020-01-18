@@ -1,42 +1,38 @@
 package algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Finder {
 	private final List<Person> people;
+	private List<AgeDifference> ageDifferences = new ArrayList<AgeDifference>();
 
 	public Finder(List<Person> people) {
 		this.people = people;
 	}
 
-	public AgeDifference find(FindCriteria findCriteria) {
+	public AgeDifference find(SearchCriteria searchCriteria) {
 		if (people.size() < 2) {
 			return AgeDifference.EMPTY_RESULT;
 		}
 
-		List<AgeDifference> ageDifferences = calculateAgeDifferences();
-		return findByCriteria(findCriteria, ageDifferences);
+		calculateAgeDifferences();
+		return findByCriteria(searchCriteria);
 	}
 
-	private List<AgeDifference> calculateAgeDifferences() {
-		List<AgeDifference> differences = new ArrayList<AgeDifference>();
+	private void calculateAgeDifferences() {
 		int numberOfPeople = people.size();
 
 		for (int i = 0; i < numberOfPeople - 1; i++) {
 			for (int j = i + 1; j < numberOfPeople; j++) {
 				AgeDifference ageDifference = calculateAgeDifference(people.get(i), people.get(j));
-				differences.add(ageDifference);
+				ageDifferences.add(ageDifference);
 			}
 		}
-
-		return differences;
 	}
 
 	private AgeDifference calculateAgeDifference(Person firstPerson, Person secondPerson) {
 		return new AgeDifference(oldestPerson(firstPerson, secondPerson),
-		                         youngestPerson(firstPerson, secondPerson),
-		                         firstPerson.ageDiffInMillis(secondPerson));
+		                         youngestPerson(firstPerson, secondPerson));
 	}
 
 	private Person oldestPerson(Person firstPerson, Person secondPerson) {
@@ -47,23 +43,14 @@ public class Finder {
 		return firstPerson.isOlderThan(secondPerson) ? secondPerson : firstPerson;
 	}
 
-	private AgeDifference findByCriteria(FindCriteria findCriteria, List<AgeDifference> differences) {
-		AgeDifference answer = differences.get(0);
-		for (AgeDifference result : differences) {
-			switch (findCriteria) {
-				case ClosestTwoPeople:
-					if (result.getTimeDiffInMillis() < answer.getTimeDiffInMillis()) {
-						answer = result;
-					}
-					break;
-
-				case FurthestTwoPeople:
-					if (result.getTimeDiffInMillis() > answer.getTimeDiffInMillis()) {
-						answer = result;
-					}
-					break;
-			}
+	private AgeDifference findByCriteria(SearchCriteria searchCriteria) {
+		Collections.sort(ageDifferences);
+		switch (searchCriteria) {
+			case ClosestTwoPeople:
+				return ageDifferences.get(0);
+			case FurthestTwoPeople:
+				return ageDifferences.get(ageDifferences.size() - 1);
 		}
-		return answer;
+		return AgeDifference.EMPTY_RESULT;
 	}
 }
