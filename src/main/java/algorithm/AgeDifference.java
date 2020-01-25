@@ -7,10 +7,10 @@ public final class AgeDifference implements Comparable<AgeDifference> {
 	private final Person youngestPerson;
 	private final Duration ageDifference;
 
-	public AgeDifference(Person oldestPerson, Person youngestPerson) {
-		this.oldestPerson = oldestPerson;
-		this.youngestPerson = youngestPerson;
-		ageDifference = oldestPerson.ageDifferenceWith(youngestPerson);
+	public AgeDifference(Person firstPerson, Person secondPerson) {
+		oldestPerson = Person.oldest(firstPerson, secondPerson);
+		youngestPerson = Person.youngest(firstPerson, secondPerson);
+		ageDifference = firstPerson.ageDifferenceWith(secondPerson);
 	}
 
 	public Person getOldestPerson() {

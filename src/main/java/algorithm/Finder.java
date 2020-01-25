@@ -25,23 +25,10 @@ public class Finder {
 
 		for (int i = 0; i < numberOfPeople - 1; i++) {
 			for (int j = i + 1; j < numberOfPeople; j++) {
-				AgeDifference ageDifference = calculateAgeDifference(people.get(i), people.get(j));
-				ageDifferences.add(ageDifference);
+				AgeDifference diff = new AgeDifference(people.get(i), people.get(j));
+				ageDifferences.add(diff);
 			}
 		}
-	}
-
-	private AgeDifference calculateAgeDifference(Person firstPerson, Person secondPerson) {
-		return new AgeDifference(oldestPerson(firstPerson, secondPerson),
-		                         youngestPerson(firstPerson, secondPerson));
-	}
-
-	private Person oldestPerson(Person firstPerson, Person secondPerson) {
-		return firstPerson.isOlderThan(secondPerson) ? firstPerson : secondPerson;
-	}
-
-	private Person youngestPerson(Person firstPerson, Person secondPerson) {
-		return firstPerson.isOlderThan(secondPerson) ? secondPerson : firstPerson;
 	}
 
 	private Optional<AgeDifference> findByCriteria(SearchCriteria searchCriteria) {

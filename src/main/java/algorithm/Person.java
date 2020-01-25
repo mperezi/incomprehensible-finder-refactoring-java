@@ -12,20 +12,20 @@ public class Person {
 		this.birthDate = birthDate;
 	}
 
-	public String getName() {
-		return name;
+	public static Person oldest(Person firstPerson, Person secondPerson) {
+		return firstPerson.isOlderThan(secondPerson) ? firstPerson : secondPerson;
 	}
 
-	public LocalDate getBirthDate() {
-		return birthDate;
+	public static Person youngest(Person firstPerson, Person secondPerson) {
+		return firstPerson.isOlderThan(secondPerson) ? secondPerson : firstPerson;
 	}
 
-	public boolean isOlderThan(Person other) {
+	private boolean isOlderThan(Person other) {
 		return birthDate.isBefore(other.birthDate);
 	}
 
 	public Duration ageDifferenceWith(Person other) {
-		return Duration.between(birthDate.atStartOfDay(), other.birthDate.atStartOfDay());
+		return Duration.between(birthDate.atStartOfDay(), other.birthDate.atStartOfDay()).abs();
 	}
 }
 
